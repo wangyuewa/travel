@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>旅游网的总结</title>
+</head>
+<style>
+
+    #div_all{
+       /* background-color: #f2dede;
+        width: 90%;*/
+    }
+    div{
+        background-color: #f5e79e;
+        width: 80%;
+
+    }
+
+</style>
+<body>
+<center>
+    <h2 >1.1:注册功能的实现原理</h2>
+</center>
+<center>
+<div id="div_all">
+<center>
+<table border="1px solid red" width="100%" >
+    <tr>
+
+        <td>
+            <center>
+            <div>1.1.1 :前台页面的实现原理</div>
+            </center>
+            <div>--1:定义所有的校验用户在输入框中输入信息校验的方法,里边定义正则表达式调用test方法进行信息的校验,直接将校验结果</div>
+            <div>进行判断之后得到的false或者ture值进行前端页面的的样式信息展示</div>
+            <div>--2:给输入框定义一个离焦事件,当失去焦点是调用校验的方法,进行页面的的错误或者正确信息的展示</div>
+            <div>--3:给提交按钮绑一个调教submit事件,此事件如果返回false就提交,如果返回ture则提交,在此方法里边定义一个ajax异步提交</div>
+            <div>判断如果客户提交的信息都为ture 则发送ajax请求,进行信息的提交,如果校验信息有无,则直接返回false,数据不会被提交</div>
+            <div>定义回调函数,接受服务器段发送过来的响应信息,并且在前端页面的具体位置进行显示和给客户的提醒</div>
+
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            <center>
+                <div>1.1.2-1 :后台服务器代码的实现原理-注册</div>
+            </center>
+            <div>-- 1 : 获取客户段发送过来的验证码和校验服务器在session里边存入的验证码是否为空或者验证码不一致,就给客户端写回提示信息和结束程序的执行reture即可</div>
+            <div>-- 2 : 调用service层的方法,进行客户的用户名是否已经被注册的验证,用username作为阐述,去数据哭里边查询是否为空,并且返回</div>
+            <div>null或者非空数据,进行逻辑判断,在返回给前端页面的同时,实现用户的添加或者用户的不添加功能的实现</div>
+            <div></div>
+
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            <center>
+                <div>1.1.2-2 :后台服务器代码的实现-客户发送邮箱和和邮件的激活功能原理</div>
+            </center>
+            <div>-- 1 : 用户在判断用户的username可用之后,在服务请service层添加添加激活状态和激活妈操作,激活码默认为N未激活,激活码直接设置到用户信息里边</div>
+            <div>同时向客户发送一封邮件,邮件中携带服务器信息,激活码信息,客户点击超链接之后直接就去访问一个叫激活的服务器</div>
+            <div>-- 2 : 在激活的服务其里边获取用户发送的激活码信息,使用此信息去数据里边查找这一对象,看看是否为有这一段对象,如果返回值部位null,</div>
+            <div>则更改客户端激活码状态为"Y" 代表客户被激活,如果返回值为空,则代表这个用户为空,回写响应信息到用户页面 激活成功护着激活失败</div>
+
+        </td>
+    </tr>
+
+</table>
+    </center>
+<center>
+    <h2>1.2:登陆能的实现</h2>
+</center>
+<center>
+<table border="1px solid red" width="100%">
+    <tr>
+        <td>
+            <center>
+            <div>1.2-1: 登陆前端页面的实现原理</div>
+            </center>
+            <div>-- 1 : 定义一个入口函数,绑定登陆按钮一个单击事件,发送ajax请求,将输入框中的没数据封装,定义回调函数,接受服务器回写的信息</div>
+            <div>-- 2 : 处理服务器数据,正确-->location.href="index.html "失败 -->"用户名或者密码错误"</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+            <div>1.2-2: 登陆后台服务器页面的实现</div>
+            </center>
+            <div>--1 : 获取服务器产生的验证验证码和客户端提交的反正码,判断是否相等,为空或者不相等时直接返回</div>
+            <div>--2 : 将获取到的数据封装到map集合中BeanUtils.populutes,用封装的user对象去数据查询更详细的数据,并且返回</div>
+            <div>--3 : 判断数据库中查询的user对象是否为空,为空写会客户端数据为false和用户名或者密码错误</div>
+            <div>--4 : 前一步判断通过之后,判断激活状态是否为n N为未激活,响应false和你尚未激活,请激活</div>
+            <div>--5 : 判断前一步不通过时,user不为空并且状态吗为Y 则返回ture并且将数据回写响应信息前端页面进行处理结果</div>
+        </td>
+    </tr>
+
+</table>
+    </center>
+<center>
+    <h2>1.3:客户姓名的展示和退出功能的实现原理</h2>
+</center>
+<center>
+<table border="1px solid red" width="100%">
+    <tr>
+        <td>
+            <center>
+            <div>1.3-1 :客户姓名的展示</div>
+                </center>
+            <div>-1 :定义入口函数,发送异步请求服务器,服务器才层调取域对象中的客户客户登录成功中的user对象,进行其姓名的获取和回写给客户端</div>
+            <div>-2 :客户信息的展示</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+            <div>1.3-2 :退出功能的实现</div>
+                </center>
+            <div>--1 : 定义入口函数,发送异步请求,在服务器段获取session的域对象,掉用其invalidate()的方法,将其自杀</div>
+            <div>--2 : 页面跳转</div>
+        </td>
+    </tr>
+
+</table>
+    </center>
+<center>
+    <h2>1.4:分页动态数据功能的实现</h2>
+</center>
+<center>
+<table border="1px solid red" width="100%">
+    <tr>
+        <td>
+                <center>
+            <div>1.4-1 :BaseServlet的抽取原理阐述</div>
+                </center>
+            <div>--1 : 定义一个BaseServlet的服务器类,使其继承HttpServlet服务器并且重写service方法</div>
+            <div>--2 : 获取客户端发送的,子服务器转发的请求的URI路径,获取其携带的方法methodName方法</div>
+            <div>--3 : 获取this调用者的类的字节码文件,获取其Class反射的getMethod的方法,进行方法名称的传递以参数的传递</div>
+            <div>--4 : 调取method.invoke的方法,传递thid以及其他参数的导入,执行方法</div>
+
+        </td>
+    </tr>
+
+
+
+    <tr>
+<center>
+        <td>
+            String uri = req.getRequestURI();<br>
+            //获取方法名;<br>
+            String methodName = uri.substring(uri.lastIndexOf("/") + 1);<br>
+            System.out.println(methodName);<br>
+            //获取方法;<br>
+            try {<br>
+            Method method = this.getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+            //执行方法<br>
+            method.setAccessible(true);<br>
+            //暴力反射;<br>
+            method.invoke(this,req,resp);<br>
+            } catch (NoSuchMethodException e) {<br>
+            e.printStackTrace();<br>
+            } catch (IllegalAccessException e) {<br>
+            e.printStackTrace();<br>
+            } catch (InvocationTargetException e) {<br>
+            e.printStackTrace();<br>
+            }<br>
+
+        </td>
+    </center>
+    </tr>
+
+    <tr>
+        <td>
+            <center>
+                <div>1.4-2 :分类功能的实现和缓存的实现原理</div>
+            </center>
+            <div>-- 1 : 分类一行的数据,全部封装到一个叫tab_category的表中,因此在前端页面秩序要发送异步请求ajax,不需要传递任何的参数去请求服务器调取服务其的数据</div>
+            <div>-- 2 :将数据封装到一个叫category的类中返回,对于分类这种不经常变化但是又要经常使用的数据,可以在service层进行数据的缓冲处理house在返回到前端页面</div>
+            <div>-- 3 :对缓冲数据的处理:首先在数据库中调取数据时加上order by cid 进行排序后在进行数据的传递,在服务器service层直接序列化之后直接以</div>
+            <div> 字符创的形式存入到数据库缓冲单当中,也可以以其他较难的形式调取</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+                <div>1.4-3 :分页展示的后台代码的实现实现原理</div>
+            </center>
+            <div>-- 1 : 前端页面需要传递两个必要的数值currentPage和pageSize和一个需要在数据库中使用的cid的值,</div>
+            <div>-- 2 :将数值在服务器层里边处理赋值之后进行service方法传递,在service层进用pageBean类的所有需要数据的全部封装</div>
+            <div> 这些数据有totalCount 需要查询数据库的所有记录,需要参数cid currentPage,totalCount,pageSize,totalPage  </div>
+            <div>-- 3 :数据库层  查询totalCount的方法   查询列表内容的方法将其封装到list-Route中并且返回即可</div>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+                <div>1.4-4 :分页展示前台代码的实现原理</div>
+            </center>
+            <div>-- 1 :调取回调函数,在前端页面展示所有的数据,首先展示totalCount totalPage 其次展示循环便利展示页码,再次展示list集合里边封装的Route对象里边的数据</div>
+            <div>-- 2 :首先是总条数和总页书的展示,直接调取pb在div标签里边写入html的之即可,其次就是展示所有的页码,同样的方法先定义首页,在定义上一页,将数据全部拼接进list+=里边即可</div>
+            <div>  展示list集合里边的Route对象数据,调取前端展示页面的id号调取html重新赋值的方法,进行字符串的拼接操作,在相应的位置写入相对应的值</div>
+            <div>--3 : 注意点  对于当前页码currentPage和pageSize的值.一般前端页面里边不传递时直接在服务器款可以赋值,每一页具体展示的页面大小基本上固定,就不需要传递</div>
+            <div>  所以即使在前端页面刚开始布局是页面没有传递任何的参数,后台服务器也不是报错,这也有利于前端代码的处理,而当前页码currentPage的值就是便利totalPage数据时所得到的每一个i的值</div>
+            <div>  而如何将i和currentPage绑定在一起并且在给每一个分页按钮点击事件又能发送异步请求从数据库中重新调取所需要的数据展示到当夜页面,结解决这一问题,只能定义一个单击事件,里边进自己装进去,进行调用</div>
+            <div>  同时进i作为参数进行传递   在load(currentPage)里边传递i的值即可,这样很合理的就达到当前页码的值,就可以进行前端的异步数据的处理</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+                <div>1.4-5 :前五后四分页展示前台代码的实现原理</div>
+            </center>
+            <div>-- 1 :定义一个开始变量begin 定义一个结束变量end 进行逻辑判断之后重新赋值</div>
+            <div>-- 2 :首先,如果pb.totalPage<10 则给begin赋值为1,end 赋值为pb.totalPage</div>
+            <div>-- 3 :其次,走else 则进行前五后四的操作,给begin=currentPage-5;end=currentPage+4</div>
+            <div>-- 3 :逻辑判断  当begin=currentPage-5 小于零时,需要进行补齐操作  进begin赋值为1 ,end 赋值为 begin+9 刚好够十页</div>
+            <div>-- 3 :逻辑判断  当end=currentPage+4大于totalPage时,需要重新赋值 end=totalPage begin=end-9</div>
+            <div>-- 4 : 页面的重新展示  for循环中的开始和结束变量换为begin 和end </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+                <div>1.4-6 :模糊查询前台的方法重构实现原理</div>
+            </center>
+            <div>-- 1 :在route-list页面包含有header页面的部分,在head页面定义一个入口函数,在点击搜索按钮里边获取一个客户在输入框中输入的值,进行页面的跳转location.href=""并且将cid和rnname的值携带过去;</div>
+            <div>-- 2 :在route_list中获取cid和rname的值,并且将值传入到原来的代码中,注意:rname 是一个字符串的值,需要进行/'/.转译一下,海域可能出现前端页面的加密乱码问题</div>
+            <div>-- 3 :在入口函数里边进行三个参数的传递,和load()方法中的三个参数的床传递即可</div>
+
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+                <div>1.4-7 :模糊查询后台的方法重构实现原理</div>
+            </center>
+            <div>-- 1:首先判断cid的值是否为空,并且其长度大于0,最关键的还是!"null.equal(cidStr)这个步奏的判断,因为前端页当cid没有值时他会闯过来一个叫"null"的字符串</div>
+            <div>-- 2:在服务器层和service层只做参数的添加即可,主要动态的查询模板在dao层实现</div>
+            <div>-- 3:dao层动态代码的模板实现::</div>
+            <hr>
+            <center>
+            <div>
+
+                String sql="select * from tab_route where 1=1 ";<br>
+                StringBuffer stringBuffer = new StringBuffer(sql);<br>
+                List params = new ArrayList<>();<br>
+                //如果cid有值,servlet层已经处理过一些数据<br>
+                if(cid>0){<br>
+                stringBuffer.append(" and cid = ? ");<br>
+                params.add(cid);<br>
+                }
+                //对于"null"字符串的解释,,当前端页面床底过来的参数为空时,他会自动转换为一个叫'null'的字符串的值,在此处也应该排除掉<br>
+                if(rname!=null&&rname.length()>0&&!"null".equals(rname)){<br>
+                stringBuffer.append(" and rname like ? ");<br>
+                params.add("%"+rname+"%");<br>
+                }
+                stringBuffer.append(" limit ?,? ");<br>
+                params.add(start);<br>
+                params.add(pageSize);<br>
+                sql = stringBuffer.toString();<br>
+                System.out.println(sql);<br>
+                System.out.println(params);<br>
+                <br>
+                List<-Route-> list = template.query(sql, new BeanPropertyRowMapper<-Route->(Route.class), params.toArray());<br>
+                    return list; }<br>
+
+
+
+            </div>
+                </center>
+
+
+        </td>
+    </tr>
+    <tr>
+    <td>
+        <center>
+            <div>1.4-7 :详情页面的查询前台的实现原理</div>
+        </center>
+        <div>-- 1:在route-list展示页面点击 "查看详情" 这个超链接时 直接链接到route_detail页面,同时携带rid 这一重要参数</div>
+        <div>-- 2:在route_detal 页面  定义一个入口函数,获取rid的值 发送异步请求  去数据库调取数据,被解析展示在页面</div>
+        <div>-- 1:前端页面的分析  这一页面展示主要涉及三张表的数据  第一个就是tab_route 路线的介绍数据introduce 还有商家的信息seller_tab</div>
+        <div>  还有大图小图的展示表 分析其便直接的关联关系  主要参数作为tab_route的查询条件 并且将所有的数据封装到Route对象里边</div>
+
+        <div>商家的sid 还有 rid 查询  tab_route_img 这一个表都行</div>
+
+
+
+    </td>
+    </tr>
+    <tr>
+    <td>
+        <center>
+            <div>1.4-8 :详情页面的查询后台代码的实现原理</div>
+        </center>
+        <div>-- 1:服务器层获取rid的值,作为参数进行传递 调取service 层  service调取层 首先调取routeDao 查询路线介绍信息将其全部封装为一个Route 对象并且返回</div>
+        <div>-- 2:在service层 再次以rid 调取tab-route_img表 将数据全部数据RouteImg封装到List集合里边,返回service加入到Route里边</div>
+        <div>-- 1:在现有的Route对象里边获取商家的sid信息  去调取tab_seller 将数据封装到Seller这个对象中并且返回  在service层加入Route</div>
+        <div>-- 2:返回服务器,协会页面数据</div>
+
+
+    </td>
+    </tr>
+
+</table>
+    </center>
+<center>
+    <h2>1.5:收藏功能的实现</h2>
+</center>
+<center>
+<table border="1px solid red" width="100%">
+    <tr>
+
+        <td>
+            <center>
+            <div>1.5-1:判断用户是否收藏前端页面功能的实现</div>
+            </center>
+            <div>在route_detail 页面,定义一个入口函数,当页面加载完成之后发送一个异步请求 请求服务器参查询表,需要获取  rid的值 ,</div>
+            <div></div>
+            <div>调取回调函数的数据.判断其返回值是否为图热或者false的值去设置按钮的class属性和点击属性的改变</div>
+            <div>
+
+
+                f(flag){//解析false或者ture的值
+                //收藏过.将按钮置灰即可<br>
+
+                $("#favorite_btn").addClass("already");<br>
+                $("#favorite_btn").attr("disabled","disabled")<br>
+
+                /*当客户点击置灰按钮支护失去点击功能*/<br>
+                $("#favorite_btn").of("click");<br>
+
+                }else{<br>
+                //没有被收藏<br>
+
+                }</div>
+
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            <center>
+                <div>1.5-2:判断用户是否收藏的功能后台代码的实现的实现</div>
+            </center>
+            <div>--1 : servlet 层  1.1获取rid的值, 回去uid 的值  对在session中存入的user对象进行获取 判断其是否为空,如果为空设置其uid=0</div>
+            <div>如果不为空说明用户登陆过  直接调取其uid的值即可 1.2 调取service 层的数据 ,传递两个参数  rid 和 uid 的值 , 将响应到的值直接写会到有前端页面即可</div>
+            <div>--2 : servic service层调取dao 层  传递rid 和uid 的值 获取dao 层传递的数据  进行逻辑判断  如果为空 retrue false  如果不为空  reture ture;</div>
+            <div>--3 : dao 层 定义sql 语句  进行数据的分装到Favorite中</div>
+
+        </td>
+    </tr>
+
+
+
+</table>
+    </table>
+</center>
+    <center>
+        <h2>1.6:添加收藏展示功能的实现</h2>
+    </center>
+    <center>
+        <table border="1px solid red" width="100%">
+            <tr>
+
+                <td>
+                    <center>
+                        <div>1.6-1:添加收藏功能的前端代码的实现实现</div>
+                    </center>
+                    <div>--1 : 给添加按钮绑定一个单机按钮  当点击收藏按钮时放异步请求ajax 需要传递的参数还是rid 没有返回值,不需要处理</div>
+                    <div>--2 : 需要添加一个条件  判断用户是否登陆 首先发送一个一步请求  去服务器中的session中是否有值 如果有值则证明用户已经登陆--> 再做添加操作 添加完成之后进行页面的自动谁刷新 location.reload</div>
+                    <div>--3 : 如果返回值为空  则直接弹出一个提醒用户尚未登陆的提示,同时将页面location.href 定向到登陆页面</div>
+                    <div> </div>
+
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <center>
+                        <div>1.6-2:添加收藏的后台代码的实现</div>
+                    </center>
+                    <div></div>
+                    <div>--1 : servlet 层  获取rid 的值  , 获取客户的值 判断用户是否为空 "null".equal(user) 如果为空 直接reture 如果不为空 获取客户的uid 的值 </div>
+                    <div>--2 : servie 层 进行参数的rid 和uid 的传递  不需要返回值直接添加</div>
+                    <div>--3 : dao 直接插入数据在数据库中  传递rid 和uid 的值  </div>
+
+                </td>
+            </tr>
+
+
+        </table>
+    </center>
+<center>
+    <h2>1.6:收藏展示功能的实现</h2>
+</center>
+<center>
+<table border="1px solid red" width="100%">
+
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+
+</table>
+    </center>
+</div>
+    </center>
+
+
+</body>
+</html>
